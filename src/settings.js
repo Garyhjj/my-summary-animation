@@ -1,5 +1,5 @@
 module.exports = {
-  title: "山西省煤炭信息监管服务平台",
+  title: "vue2-template",
 
   fixedHeader: true,
 
