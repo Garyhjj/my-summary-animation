@@ -14,10 +14,12 @@ import "@/layout/index.js";
 // svg 图标
 import "@/assets/svg-icons";
 import animation from "@/libs/animation";
+import animation1 from "@/libs/animation2";
 
 Vue.config.productionTip = false;
 
 Vue.use(animation);
+Vue.use(animation1, router);
 
 new Vue({
   router,

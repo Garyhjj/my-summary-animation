@@ -18,7 +18,13 @@ const routes = [
       {
         path: "index",
         name: "index",
-        component: _import("home")
+        component: _import("page2")
+      },
+      // 首页
+      {
+        path: "page2",
+        name: "page2",
+        component: _import("page3")
       }
     ]
   },

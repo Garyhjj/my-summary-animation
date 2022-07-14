@@ -1,8 +1,34 @@
 @import "./variables.scss";
 
 body {
-    font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+    font-family: PingFangSC-Regular, PingFang SC, Microsoft YaHei, Verdana, Simsun;
     max-width: 1920px;
     margin: 0 auto;
     background: #000;
+}
+
+.jt-title {
+    color: #000;
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.jt-sub-title {
+    color: #E3051A;
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.jt-month {
+    color: #575756;
+    font-size: 18px;
+    font-weight: 600;
+    font-size: italic;
+}
+
+.jt-count {
+    color: #878787;
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 18px;
 }

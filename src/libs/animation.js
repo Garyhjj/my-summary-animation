@@ -112,8 +112,10 @@ class AnimationContorller {
           )
         );
       } else {
-        forward.push(this.patchTransition(() => a.leaveAnimation.runForward()));
-        back.push(this.patchTransition(() => a.leaveAnimation.runBack()));
+        if (a.leaveAnimation) {
+          forward.push(this.patchTransition(() => a.leaveAnimation.runForward()));
+          back.push(this.patchTransition(() => a.leaveAnimation.runBack()));
+        }
       }
     });
     this.forwardTransitions = forward;
@@ -225,22 +227,22 @@ class AnimationContorller {
   next() {
     this.hasStarted = true;
     if (this.isWaiting()) return;
-    if (this.hasCallBackTransistion) {
-      this.callTransition(true);
-      return;
-    }
+    // if (this.hasCallBackTransistion && this.forwardTransitions.length > 0) {
+    //   this.callTransition(true);
+    //   return;
+    // }
     if (this.goingNext) {
-      if (this.activeIdx >= 0 && this.activeSubIdx === this.blockAnimationArr[this.activeIdx].animations.length - 1 && this.latestTransistionIdx !== this.activeIdx) {
-        this.latestTransistionIdx = this.activeIdx;
-        this.callTransition(true);
-        const oldActiveIdx = this.activeIdx;
-        this.updateNextIdx();
-        if (oldActiveIdx < this.activeIdx) {
-          // 给下一次next的时候添加回去
-          this.activeSubIdx--;
-        }
-        return;
-      }
+      // if (this.activeIdx >= 0 && this.activeSubIdx === this.blockAnimationArr[this.activeIdx].animations.length - 1 && this.latestTransistionIdx !== this.activeIdx && this.forwardTransitions.length > 0) {
+      //   this.latestTransistionIdx = this.activeIdx;
+      //   this.callTransition(true);
+      //   const oldActiveIdx = this.activeIdx;
+      //   this.updateNextIdx();
+      //   if (oldActiveIdx < this.activeIdx) {
+      //     // 给下一次next的时候添加回去
+      //     this.activeSubIdx--;
+      //   }
+      //   return;
+      // }
       if (!this.updateNextIdx()) return;
     } else {
       this.goingNext = true;
@@ -257,20 +259,20 @@ class AnimationContorller {
 
   back() {
     if (!this.hasStarted || this.isWaiting()) return;
-    if (this.hasCallForwardTransistion) {
-      this.callTransition(false);
-      return;
-    }
+    // if (this.hasCallForwardTransistion) {
+    //   this.callTransition(false);
+    //   return;
+    // }
     if (this.goingNext) {
       this.goingNext = false;
     } else {
-      if (this.activeSubIdx === 0 && this.activeIdx > 0 && this.latestTransistionIdx !== this.activeIdx - 1) {
-        this.updatePreIdx();
-        this.latestTransistionIdx = this.activeIdx;
-        this.callTransition(false);
-        this.activeSubIdx++;
-        return;
-      }
+      // if (this.activeSubIdx === 0 && this.activeIdx > 0 && this.latestTransistionIdx !== this.activeIdx - 1) {
+      //   this.updatePreIdx();
+      //   this.latestTransistionIdx = this.activeIdx;
+      //   this.callTransition(false);
+      //   this.activeSubIdx++;
+      //   return;
+      // }
       if (!this.updatePreIdx()) return;
     }
     const curr = this.getCurrentAnimation();
@@ -297,6 +299,11 @@ export class BlockAnimation {
   }
   addLeaveAnimation(animation) {
     this.leaveAnimation = animation;
+  }
+
+  addAnimation(animation) {
+    animation = Array.isArray(animation) ? animation : [animation];
+    this.animations.push(...animation);
   }
 }
 

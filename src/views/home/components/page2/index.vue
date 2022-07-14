@@ -56,7 +56,7 @@ export default {
 <style style lang="scss" scoped>
 .back-container {
   position: absolute;
-  top: 100%;
+  // top: 100%;
   height: 100%;
   width: 100%;
   background: yellow;
