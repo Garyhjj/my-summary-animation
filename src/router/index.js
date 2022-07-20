@@ -3,7 +3,9 @@ import VueRouter from "vue-router";
 import mainLayout from "../layout/index.vue";
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
-const _import = require("@/libs/util.import." + process.env.NODE_ENV);
+// const _import = require("@/libs/util.import." + process.env.NODE_ENV);
+
+const notLazyImport = require("@/libs/util.import.development");
 
 Vue.use(VueRouter);
 
@@ -18,13 +20,37 @@ const routes = [
       {
         path: "index",
         name: "index",
-        component: _import("page2")
+        component: notLazyImport("home")
       },
-      // 首页
+      // page2
       {
         path: "page2",
         name: "page2",
-        component: _import("page3")
+        component: notLazyImport("page2")
+      },
+      // page3
+      {
+        path: "page3",
+        name: "page3",
+        component: notLazyImport("page3")
+      },
+      // page4
+      {
+        path: "page4",
+        name: "page4",
+        component: notLazyImport("page4")
+      },
+      // page5
+      {
+        path: "page5",
+        name: "page5",
+        component: notLazyImport("page5")
+      },
+      // loading
+      {
+        path: "loading",
+        name: "loading",
+        component: notLazyImport("loading")
       }
     ]
   },

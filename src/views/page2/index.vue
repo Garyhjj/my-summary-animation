@@ -1,24 +1,38 @@
 <template>
-  <div class="back-container page1" :class="{hidden: leaved, active: active}">
+  <div
+      class="back-container page2"
+      :class="{leaving: leaved,
+                active: active,
+               'person-active': personAfterEnter,
+               'cloud-left-active': cloudLeftAfterEnter,
+               'cloud-right-active': cloudRightAfterEnter}">
 
      <div class="text-box">
-      <div class="jt-title name">Hi, Octavia Chong</div>
-      <div class="jt-sub-title line1">This is your 2022</div>
-      <div class="jt-sub-title line2">Journey With us</div>
+      <div class="block">
+        <div class="jt-sub-title title">Total Delivered</div>
+        <div class="jt-text">International<span class="jt-value">386</span>parcels</div>
+        <div class="jt-text">Domestic<span class="jt-value">1385</span>parcels</div>
+      </div>
+      <div class="block">
+        <div class="jt-sub-title title">Total Received</div>
+        <div class="jt-text"><span class="jt-value">27</span>parcels</div>
+      </div>
      </div>
-    <img draggable="false" class="love" src="~@/assets/images/1st Links/Love.png" alt="">
-    <img draggable="false" class="person" src="~@/assets/images/1st Links/person.png" alt="">
-    <img draggable="false" class="river" src="~@/assets/images/1st Links/Background.png" alt="">
-    <img draggable="false" class="emoji1" src="~@/assets/images/1st Links/Emoji 1.png" alt="">
-    <img draggable="false" class="emoji2" src="~@/assets/images/1st Links/Emoji 2.png" alt="">
-    <img draggable="false" class="emoji3" src="~@/assets/images/1st Links/Emoji 3.png" alt="">
-    <img draggable="false" class="zig" src="~@/assets/images/1st Links/Zig Zag.png" alt="">
-    <img draggable="false" class="ball" src="~@/assets/images/1st Links/Purple ball.png" alt="">
+     <div class="text-modal"></div>
+
+     <img draggable="false" class="clock" :class="{jitter : active&&shouldCloudMove}" src="~@/assets/images/2nd Links/Clock.png" alt="">
+     <img draggable="false" class="dispatcher" src="~@/assets/images/2nd Links/Dispatcher.png" alt="">
+     <img draggable="false" class="dispatcher-out" src="~@/assets/images/2nd Links/Dispatcher.png" alt="">
+     <img draggable="false" class="cloud-left" src="~@/assets/images/2nd Links/Cloud 2.png" alt="">
+     <img draggable="false" class="cloud-right" src="~@/assets/images/2nd Links/Cloud 1.png" alt="">
+     <img draggable="false" class="cloud-left-out" src="~@/assets/images/2nd Links/Cloud 2.png" alt="">
+     <img draggable="false" class="cloud-right-out" src="~@/assets/images/2nd Links/Cloud 1.png" alt="">
   </div>
 </template>
 
 <script>
 import anime from "animejs";
+import { animeFinished } from "../../libs";
 
 export default {
   props: {
@@ -26,172 +40,210 @@ export default {
   },
   data() {
     return {
-      tl: null,
       loopAnimations: [],
       leaved: false,
-      active: false
+      active: false,
+      animeList: [],
+      personAfterEnter: false,
+      cloudLeftAfterEnter: false,
+      cloudRightAfterEnter: false,
+      shouldCloudMove: true
     };
   },
   mounted() {
-    const tl = anime.timeline({
-      easing: "easeOutExpo",
-      duration: 1500,
+    const textAnime = anime({
+      targets: ".page2 .text-modal",
+      translateX: "-100%",
+      translateY: "4rem",
+      duration: 1300,
+      easing: "easeOutExpo"
+    });
+
+    const clockAnime = anime({
+      targets: ".page2 .clock",
+      keyframes: [
+        { marginBottom: "3rem", duration: 500 },
+        { marginBottom: "0" }
+      ],
+      easing: "linear",
+      duration: 600
+    });
+
+    const personAnime = anime({
+      targets: ".page2 .dispatcher",
+      keyframes: [
+        { translateY: "-18rem", zoom: 1.2, duration: 500 },
+        { translateY: "-14rem", zoom: 0.9 },
+        { translateY: "-15rem", zoom: 1 }
+      ],
+      easing: "linear",
+      duration: 700
+    });
+
+    const personAnimeForOut = anime({
+      targets: ".page2 .dispatcher-out",
+      keyframes: [
+        { zoom: 1.1, duration: 400 },
+        { zoom: 1, duration: 100 },
+        { translateY: "15rem", zoom: 0.5, opacity: 0.5 }
+      ],
+      easing: "linear",
+      duration: 600,
       autoplay: false
     });
 
-    tl.add({
-      targets: ".page1 .river",
-      translateX: "-100%",
-      translateY: "-10rem"
-    })
-      .add({
-        targets: ".page1 .person",
-        translateX: "-89%",
-        duration: 700,
-        opacity: 1,
-        easing: "easeInQuad"
-      }, "-=1500")
-      .add({
-        targets: ".page1 .love",
-        translateX: "calc(100% + 24px)",
-        scale: 1,
-        easing: "spring(1, 80, 10, 0)"
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji3",
-        translateX: "-2rem",
-        translateY: "-2rem",
-        opacity: 1,
-        duration: 2000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji1",
-        translateX: "3rem",
-        rotate: 1080,
-        duration: 1000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji2",
-        translateX: "-6rem",
-        translateY: "-7rem",
-        opacity: 1,
-        duration: 2000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .zig",
-        opacity: 1
-      }, "-=1500")
-      .add({
-        targets: ".page1 .ball",
-        translateY: "-3rem",
-        duration: 2000
-      }, "-=2000")
-      .add({
-        targets: ".page1 .name",
-        translateX: "57%",
-        duration: 800
-      }, "-=1800")
-      .add({
-        targets: ".page1 .line1",
-        translateX: "57%",
-        duration: 800
-      }, "-=1600")
-      .add({
-        targets: ".page1 .line2",
-        translateX: "57%",
-        duration: 800
-      }, "-=1400");
-    tl.update = anim => {
-      if (Math.round(anim.progress) === 100) {
-        if (tl.reversed) {
-          this.leaved = true;
-          return;
+    personAnime.complete = () => {
+      if (!personAnime.reversed) {
+        this.personAfterEnter = true;
+        const a = this.animeList[2] = personAnimeForOut;
+        if (!a.reversed) {
+          a.reverse();
         }
-        this.active = true;
-        this.loopAnimations.push(this.startAutoRotateAnime(".page1 .emoji3"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji1"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji2"));
+        personAnime.reverse();
+        personAnime.play();
       }
     };
-    this.tl = tl;
+
+    personAnimeForOut.complete = () => {
+      if (!personAnimeForOut.reversed) {
+        this.personAfterEnter = false;
+        this.animeList[2] = personAnime;
+        personAnimeForOut.reverse();
+        personAnimeForOut.play();
+      }
+    };
+
+    const cloudLeftAnime = anime({
+      targets: ".page2 .cloud-left",
+      translateY: "-15rem",
+      duration: 1500
+    });
+
+    const cloudRightAnime = anime({
+      targets: ".page2 .cloud-right",
+      translateY: "-15rem",
+      duration: 1500
+    });
+
+    const cloudLeftForOut = anime({
+      targets: ".page2 .cloud-left-out",
+      marginBottom: "-15rem", opacity: 0.8,
+      easing: "easeOutExpo",
+      duration: 1000,
+      delay: 500,
+      autoplay: false
+    });
+
+    const cloudRightForOut = anime({
+      targets: ".page2 .cloud-right-out",
+      translateY: "-15rem", opacity: 0.8,
+      easing: "easeOutExpo",
+      duration: 1000,
+      delay: 500,
+      autoplay: false
+    });
+
+    cloudLeftAnime.complete = (a) => {
+      if (!a.reversed) {
+        this.cloudLeftAfterEnter = true;
+        const a = this.animeList[3] = cloudLeftForOut;
+        if (!a.reversed) {
+          a.reverse();
+        }
+        cloudLeftAnime.reverse();
+        cloudLeftAnime.play();
+      }
+    };
+
+    cloudLeftForOut.complete = (a) => {
+      if (!a.reversed) {
+        this.cloudLeftAfterEnter = false;
+        this.animeList[3] = cloudLeftAnime;
+        cloudLeftForOut.reverse();
+        cloudLeftForOut.play();
+      }
+    };
+
+    cloudRightAnime.complete = (a) => {
+      if (!a.reversed) {
+        this.cloudRightAfterEnter = true;
+        const a = this.animeList[4] = cloudRightForOut;
+        if (!a.reversed) {
+          a.reverse();
+        }
+        cloudRightAnime.reverse();
+        cloudRightAnime.play();
+      }
+    };
+
+    cloudRightForOut.complete = (a) => {
+      if (!a.reversed) {
+        this.cloudRightAfterEnter = false;
+        this.animeList[4] = cloudRightAnime;
+        cloudRightForOut.reverse();
+        cloudRightForOut.play();
+      }
+    };
+
+    this.animeList.push(textAnime);
+    this.animeList.push(clockAnime);
+    this.animeList.push(personAnime);
+    this.animeList.push(cloudLeftAnime);
+    this.animeList.push(cloudRightAnime);
+
     this.registryAnimation();
   },
   methods: {
-    startAutoRotateAnime(targets) {
-      const rotateTl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 6000,
-        loop: true
-      });
-      rotateTl.add({
-        rotate: 50
-      }).add({
-        targets,
-        rotate: 0,
-        endDelay: -3000
-      }, "-=2000");
-      return rotateTl;
-    },
-    startAutoScaleAnime(targets) {
-      const tl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 3000,
-        loop: true
-      });
-      tl.add({
-        scale: 1.1
-      }).add({
-        targets,
-        scale: 1,
-        endDelay: -1000
-      }, "-=1000");
-      return tl;
-    },
-    startBallAnime(targets) {
-      const tl = anime({
-        targets,
-        easing: "easeOutExpo",
-        keyframes: [
-          {
-            translateX: "0.15rem",
-            translateY: "-2.9rem"
-          },
-          {
-            translateX: "0.3rem",
-            translateY: "-3rem"
-          },
-          {
-            translateX: "0.31rem",
-            translateY: "-3.1rem"
-          }
-        ],
-        duration: 3000,
-        loop: true
-      });
-      return tl;
-    },
     registryAnimation() {
-      const animation = this.$animation1;
-      animation.setAnimations([animation.createAnimation(() => {
+      const animationCtr = this.$animationCtr;
+      animationCtr.beforeGoBack = () => {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
         this.active = false;
+        this.leaved = true;
+        return this.play().then(() => { this.active = false; });
+      };
+      animationCtr.setAnimations([animationCtr.createAnimation(() => {
+        this.loopAnimations.forEach(a => {
+          a.pause();
+        });
+        this.active = false;
+        this.leaved = true;
         this.loopAnimations = [];
-        return this.play();
+        return this.play().then(() => { this.active = false; });
       }, () => {
         this.leaved = false;
-        return this.play();
+        return this.play().then(() => { this.active = true; });
       })]);
-      this.tl.play();
-      this.tl.finished.then(() => { animation.locked = false; });
+      this.start().then(() => {
+        animationCtr.locked = false;
+        this.active = true;
+        this.startClockAnimation();
+      });
     },
     play() {
-      this.tl.reverse();
-      this.tl.play();
-      return this.tl.finished;
+      return Promise.all(this.animeList.map(a => {
+        a.reverse();
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
+    },
+    start() {
+      return Promise.all(this.animeList.map(a => {
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
+    },
+    startClockAnimation() {
+      const id = setInterval(() => {
+        this.shouldCloudMove = !this.shouldCloudMove;
+      }, 2000);
+      this.$once("hook:beforeDestroy", () => {
+        clearInterval(id);
+      });
     }
   }
 };
@@ -200,112 +252,167 @@ export default {
 <style style lang="scss" scoped>
 .back-container {
   height: 100%;
+  padding: 60px 48px;
   background: white;
   overflow: hidden;
-  // &.hidden {
-  //   height: 0;
-  // }
 }
 
-.person {
-  width: 800px;
+.block {
+  margin-bottom: 88px;
+  div {
+    margin-bottom: 16px;
+  }
+  .title {
+    margin-bottom: 24px;
+  }
+  .jt-value {
+    padding: 0 8px;
+  }
+}
+
+.text-modal {
   position: absolute;
-  bottom: 40px;
-  right: -800px;
-  opacity: 0.6;
+  top: -90px;
+  left: -120px;
+  height: 680px;
+  width: 680px;
+  border-radius: 100%;
+  box-shadow:0px 0px 80px 60px rgba(255,255,255,0.8);
+  background-image: radial-gradient(#FFF 50%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,0.8) 90%);
+}
+
+.clock {
+  position: absolute;
+  width: 750px;
+  bottom: 68px;
+  margin-bottom: -15rem;
+  left: 50%;
+  margin-left: -375px;
+}
+
+.dispatcher {
+  position: absolute;
+  width: 680px;
+  bottom: calc(1px - 15rem);
+  left: 50%;
+  margin-left: -340px;
+}
+
+.person-active {
+  .dispatcher {
+    display: none;
+  }
+  .dispatcher-out {
+    display: block;
+  }
+}
+
+.dispatcher-out {
+  position: absolute;
+  width: 680px;
+  bottom: 1px;
+  left: 50%;
+  margin-left: -340px;
+  display: none;
+}
+
+.cloud-left {
+  width: 240px;
+  position: absolute;
+  bottom: calc(580px - 15rem);
   z-index: 2;
 }
 
-.river {
-  width: 1575px;
+.cloud-right {
+  width: 290px;
   position: absolute;
-  bottom: calc(-530px - 10rem);
-  right: calc(-578px - 1575px);
-  z-index: 0;
-}
-
-.love {
-  width: 200px;
-  position: absolute;
-  top: 40px;
-  left: -200px;
+  bottom: calc(680px - 15rem);
+  right: 30px;
   z-index: 2;
 }
 
-.emoji1 {
-  width: 100px;
+.cloud-left-out {
+  width: 240px;
+  position: absolute;
+  bottom: 580px;
+  z-index: 2;
+  display: none;
+}
+
+.cloud-right-out {
+  width: 290px;
   position: absolute;
   bottom: 680px;
-  left: calc(120px - 3rem);
+  right: 30px;
   z-index: 2;
+  display: none;
 }
 
-.emoji2 {
-  width: 350px;
-  position: absolute;
-  bottom: calc(110px - 7rem);
-  left: calc(170px + 6rem);
-  opacity: 0.3;
-  z-index: 2;
-}
-
-.emoji3 {
-  width: 200px;
-  position: absolute;
-  bottom: calc(40px - 2rem);
-  right: calc(20px - 2rem);
-  opacity: 0;
-  z-index: 2;
-}
-
-.zig {
-  width: 200px;
-  position: absolute;
-  bottom: 64px;
-  left: 50%;
-  margin-left: -100px;
-  opacity: 0;
-  z-index: 2;
-}
-
-.ball {
-  width: 200px;
-  position: absolute;
-  bottom: calc(10px - 3rem);
-  left: 40px;
-  z-index: 2;
-}
-
-.text-box {
-  position: absolute;
-  top: 290px;
-  left: 64px;
-  div {
-    margin-left: calc(-130%);
+.cloud-left-active {
+  .cloud-left {
+    display: none;
+  }
+  .cloud-left-out {
+    display: block;
+  }
+  &:not(.leaving) {
+    .cloud-left-out {
+      animation: cloudLeftMove 5s linear infinite;
+    }
   }
 }
 
-.active {
-  .ball {
-    animation: ballMove 5s linear infinite;
+.cloud-right-active {
+  .cloud-right {
+    display: none;
+  }
+  .cloud-right-out {
+    display: block;
+  }
+  &:not(.leaving) {
+    .cloud-right-out {
+      animation: cloudLeftMove 8s linear infinite;
+      animation-direction: reverse;
+    }
   }
 }
 
-@keyframes ballMove {
+.jitter {
+    animation-duration: 0.1ms;
+    animation-name: alarm;
+    animation-iteration-count: infinite;
+}
+
+@keyframes alarm {
+    25% {
+        transform: matrix(0.998, 0, 0, 1.005, 0, 0) rotateZ(0deg) skewX(-0.1deg);
+    }
+    50% {
+        transform: matrix(1.005, 0, 0, 0.998, 0, 0) rotateZ(-0.5deg) skewX(0deg);
+    }
+    75% {
+        transform: matrix(1, 0, 0, 0.998, 0, 0) rotateZ(-0.5deg) skewX(-0.1deg);
+    }
+    0% , 100% {
+        transform: matrix(1, 0, 0, 1, 0, 0) rotateZ(0deg) skewX(0deg);
+    }
+}
+
+@keyframes cloudLeftMove {
   0% {
-    transform: translate(1px, -3rem);
+    transform: translate(0, 0);
   }
   20% {
-    transform: translate(20px, -2.9rem);
+    transform: translate(20px, -15px);
   }
   40% {
-    transform: translate(40px, -3rem);
+    transform: translate(40px, -20px);
   }
   60% {
-    transform: translate(40px, -3.1rem);
+    transform: translate(40px, -30px);
   }
   80% {
-    transform: translate(20px, -3.1rem);
+    transform: translate(20px, -30px);
   }
 }
 </style>

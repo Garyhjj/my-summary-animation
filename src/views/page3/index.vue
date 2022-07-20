@@ -1,24 +1,45 @@
 <template>
-  <div class="back-container page1" :class="{hidden: leaved, active: active}">
+  <div
+      class="back-container page3"
+      :class="{active: active}">
 
      <div class="text-box">
-      <div class="jt-title name">Hi, Octavia Chong</div>
-      <div class="jt-sub-title line1">This is your 2022</div>
-      <div class="jt-sub-title line2">Journey Wiht us</div>
+      <div class="block">
+        <div class="title">
+          <div class="jt-sub-title line1 line">Total</div>
+          <div class="jt-sub-title line2 line">Delivery Cost</div>
+        </div>
+        <div class="jt-value line3 line"><span>RM30</span></div>
+      </div>
+      <div class="block">
+        <div class="title">
+          <div class="jt-sub-title line4 line">Used</div>
+          <div class="jt-sub-title line5 line">Vouchers</div>
+        </div>
+        <div class="jt-text line6 line"><span class="jt-value">12</span>vouchers</div>
+      </div>
      </div>
-    <img draggable="false" class="love" src="~@/assets/images/1st Links/Love.png" alt="">
-    <img draggable="false" class="person" src="~@/assets/images/1st Links/person.png" alt="">
-    <img draggable="false" class="river" src="~@/assets/images/1st Links/Background.png" alt="">
-    <img draggable="false" class="emoji1" src="~@/assets/images/1st Links/Emoji 1.png" alt="">
-    <img draggable="false" class="emoji2" src="~@/assets/images/1st Links/Emoji 2.png" alt="">
-    <img draggable="false" class="emoji3" src="~@/assets/images/1st Links/Emoji 3.png" alt="">
-    <img draggable="false" class="zig" src="~@/assets/images/1st Links/Zig Zag.png" alt="">
-    <img draggable="false" class="ball" src="~@/assets/images/1st Links/Purple ball.png" alt="">
+     <img draggable="false" class="small-box" src="~@/assets/images/3rd Links/Small Box.png" alt="">
+     <img draggable="false" class="big-box" src="~@/assets/images/3rd Links/Big Box-03.png" alt="">
+     <img draggable="false" class="hand" style="transform: scale(0)" src="~@/assets/images/3rd Links/Hands-04.png" alt="">
+     <img draggable="false" class="left-voucher" style="transform: scale(0)" src="~@/assets/images/3rd Links/Big Voucher-01.png" alt="">
+     <img draggable="false" class="right-voucher" style="transform: scale(0)" src="~@/assets/images/3rd Links/Small voucher.png" alt="">
+
+     <img draggable="false" class="hand-coin hand-coin1" src="~@/assets/images/3rd Links/Coins on hand_1.png" alt="">
+     <img draggable="false" class="hand-coin hand-coin2" src="~@/assets/images/3rd Links/Coins on hand_2.png" alt="">
+     <img draggable="false" class="hand-coin hand-coin3" src="~@/assets/images/3rd Links/Coins on hand_3-04.png" alt="">
+     <img draggable="false" class="hand-coin hand-coin4" src="~@/assets/images/3rd Links/Coins on hand_4-04.png" alt="">
+
+     <img draggable="false" class="coin coin1" style="transform: translateY(-96px)" src="~@/assets/images/3rd Links/Coin 1.png" alt="">
+     <img draggable="false" class="coin coin2" style="transform: translateY(-150px) rotate(-40deg)" src="~@/assets/images/3rd Links/Coin 2.png" alt="">
+     <img draggable="false" class="coin coin3" style="transform: translateY(-450px)" src="~@/assets/images/3rd Links/Coin 3-01.png" alt="">
+     <img draggable="false" class="coin coin4" style="transform: translateY(-600px)" src="~@/assets/images/3rd Links/Coin 4-01.png" alt="">
   </div>
 </template>
 
 <script>
 import anime from "animejs";
+import { animeFinished } from "../../libs";
 
 export default {
   props: {
@@ -26,181 +47,192 @@ export default {
   },
   data() {
     return {
-      tl: null,
       loopAnimations: [],
-      leaved: false,
-      active: false
+      active: false,
+      animeList: []
     };
   },
   mounted() {
-    const tl = anime.timeline({
+    const smallBoxAnime = anime({
+      targets: ".page3 .small-box",
+      marginLeft: 0,
       easing: "easeOutExpo",
-      duration: 1500,
-      autoplay: false
+      duration: 1000
+    });
+    const bigBoxAnime = anime({
+      targets: ".page3 .big-box",
+      marginRight: 0,
+      easing: "easeOutExpo",
+      duration: 1000
     });
 
-    tl.add({
-      targets: ".page1 .river",
-      translateX: "-100%",
-      translateY: "-10rem"
-    })
-      .add({
-        targets: ".page1 .person",
-        translateX: "-89%",
-        duration: 700,
-        opacity: 1,
-        easing: "easeInQuad"
-      }, "-=1500")
-      .add({
-        targets: ".page1 .love",
-        translateX: "calc(100% + 24px)",
-        scale: 1,
-        easing: "spring(1, 80, 10, 0)"
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji3",
-        translateX: "-2rem",
-        translateY: "-2rem",
-        opacity: 1,
-        duration: 2000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji1",
-        translateX: "3rem",
-        rotate: 1080,
-        duration: 1000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .emoji2",
-        translateX: "-6rem",
-        translateY: "-7rem",
-        opacity: 1,
-        duration: 2000
-      }, "-=1500")
-      .add({
-        targets: ".page1 .zig",
-        opacity: 1
-      }, "-=1500")
-      .add({
-        targets: ".page1 .ball",
-        translateY: "-3rem",
-        duration: 2000
-      }, "-=2000")
-      .add({
-        targets: ".page1 .name",
-        translateX: "57%",
-        duration: 800
-      }, "-=1800")
-      .add({
-        targets: ".page1 .line1",
-        translateX: "57%",
-        duration: 800
-      }, "-=1600")
-      .add({
-        targets: ".page1 .line2",
-        translateX: "57%",
-        duration: 800
-      }, "-=1400");
-    tl.update = anim => {
-      if (Math.round(anim.progress) === 100) {
-        if (tl.reversed) {
-          this.leaved = true;
-          return;
-        }
-        this.active = true;
-        this.loopAnimations.push(this.startAutoRotateAnime(".page1 .emoji3"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji1"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji2"));
-      }
-    };
-    this.tl = tl;
+    const handeAnime = anime({
+      targets: ".page3 .hand",
+      keyframes: [
+        { scale: 0, duration: 600 },
+        { scale: 1 }
+      ],
+      duration: 1300
+    });
+    this.animeList.push(this.initTextAnime());
+    this.animeList.push(smallBoxAnime);
+    this.animeList.push(bigBoxAnime);
+    this.animeList.push(handeAnime);
+    this.animeList.push(this.initVoucherAnime());
+    this.animeList.push(...this.initHandCoinAnime());
+    this.animeList.push(...this.initCoinAnime());
     this.registryAnimation();
   },
   methods: {
-    startAutoRotateAnime(targets) {
-      const rotateTl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 6000,
-        loop: true
-      });
-      rotateTl.add({
-        rotate: 50
-      }).add({
-        targets,
-        rotate: 0,
-        endDelay: -3000
-      }, "-=2000");
-      return rotateTl;
-    },
-    startAutoScaleAnime(targets) {
-      const tl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 3000,
-        loop: true
-      });
-      tl.add({
-        scale: 1.1
-      }).add({
-        targets,
-        scale: 1,
-        endDelay: -1000
-      }, "-=1000");
-      return tl;
-    },
-    startBallAnime(targets) {
-      const tl = anime({
-        targets,
-        easing: "easeOutExpo",
-        keyframes: [
-          {
-            translateX: "0.15rem",
-            translateY: "-2.9rem"
-          },
-          {
-            translateX: "0.3rem",
-            translateY: "-3rem"
-          },
-          {
-            translateX: "0.31rem",
-            translateY: "-3.1rem"
-          }
-        ],
-        duration: 3000,
-        loop: true
-      });
-      return tl;
-    },
     registryAnimation() {
-      const animation = this.$animation1;
-      animation.beforeGoBack = () => {
+      const animationCtr = this.$animationCtr;
+      animationCtr.beforeGoBack = () => {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
         this.active = false;
-        return this.play();
+        this.leaved = true;
+        return this.play().then(() => { this.active = false; });
       };
-      animation.setAnimations([animation.createAnimation(() => {
+      animationCtr.setAnimations([animationCtr.createAnimation(() => {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
         this.active = false;
+        this.leaved = true;
         this.loopAnimations = [];
-        return this.play();
+        return this.play().then(() => { this.active = false; });
       }, () => {
         this.leaved = false;
-        return this.play();
+        return this.play().then(() => { this.active = true; });
       })]);
-      this.tl.play();
-      this.tl.finished.then(() => {
-        animation.locked = false;
+      this.start().then(() => {
+        animationCtr.locked = false;
+        this.active = true;
       });
     },
     play() {
-      this.tl.reverse();
-      this.tl.play();
-      return this.tl.finished;
+      return Promise.all(this.animeList.map(a => {
+        a.reverse();
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
+    },
+    start() {
+      return Promise.all(this.animeList.map(a => {
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
+    },
+    initTextAnime() {
+      const length = 7;
+      const tl = anime.timeline({
+        easing: "easeOutExpo",
+        duration: 300,
+        autoplay: false
+      });
+      for (let i = 1; i <= length; i++) {
+        tl.add({
+          targets: `.page3 .line${i}`,
+          marginLeft: 0
+        }, i === 1 ? undefined : "-=100");
+      }
+      return tl;
+    },
+    initVoucherAnime() {
+      const tl = anime.timeline({
+        easing: "easeOutExpo",
+        duration: 1200,
+        autoplay: false
+      });
+      tl.add({
+        targets: ".page3 .right-voucher",
+        keyframes: [
+          { scale: 0, duration: 700 },
+          { scale: 1 }
+        ]
+      }).add({
+        targets: ".page3 .left-voucher",
+        keyframes: [
+          { scale: 1 }
+        ],
+        duration: 300
+      }, "-=300");
+      return tl;
+    },
+    initHandCoinAnime() {
+      const base = {
+        opacity: 1,
+        duration: 500,
+        delay: 700
+      };
+      const coin1 = anime({
+        targets: ".page3 .hand-coin1",
+        translateY: "-2.3rem",
+        translateX: "-1rem",
+        easing: "easeOutExpo",
+        ...base
+      });
+
+      const coin2 = anime({
+        targets: ".page3 .hand-coin2",
+        translateY: "-3.6rem",
+        easing: "easeOutExpo",
+        ...base
+      });
+
+      const coin3 = anime({
+        targets: ".page3 .hand-coin3",
+        translateY: "-2.9rem",
+        translateX: "1.4rem",
+        easing: "easeOutExpo",
+        ...base
+      });
+
+      const coin4 = anime({
+        targets: ".page3 .hand-coin4",
+        translateY: "-2.5rem",
+        translateX: "2.9rem",
+        easing: "easeOutExpo",
+        ...base
+      });
+      return [coin1, coin2, coin3, coin4];
+    },
+    initCoinAnime() {
+      const base = {
+        duration: 1000,
+        easing: "easeOutExpo",
+        translateY: 0
+      };
+      const coin1 = anime({
+        targets: ".page3 .coin1",
+        delay: 300,
+        ...base
+      });
+
+      const coin2 = anime({
+        targets: ".page3 .coin2",
+        rotate: 0,
+        delay: 300,
+        ...base
+      });
+
+      const coin3 = anime({
+        targets: ".page3 .coin3",
+        rotate: -360,
+        duration: 1200,
+        ...base
+      });
+
+      const coin4 = anime({
+        targets: ".page3 .coin4",
+        rotate: -360,
+        duration: 1200,
+        ...base
+      });
+      return [coin1, coin2, coin3, coin4];
     }
   }
 };
@@ -209,112 +241,164 @@ export default {
 <style style lang="scss" scoped>
 .back-container {
   height: 100%;
+  padding: 100px 48px;
   background: white;
   overflow: hidden;
-  // &.hidden {
-  //   height: 0;
-  // }
 }
 
-.person {
-  width: 800px;
-  position: absolute;
-  bottom: 40px;
-  right: -800px;
-  opacity: 0.6;
-  z-index: 2;
+.block {
+  margin-bottom: 88px;
+  .title {
+    margin-bottom: 24px;
+  }
+  .jt-value {
+    padding-right: 12px;
+  }
+  .line {
+    margin-left: -80%;
+  }
 }
 
-.river {
-  width: 1575px;
+.small-box {
   position: absolute;
-  bottom: calc(-530px - 10rem);
-  right: calc(-578px - 1575px);
+  width: 330px;
+  left: 84px;
+  margin-left: -100%;
+  bottom: 100px;
+  z-index: 4;
+}
+
+.big-box {
+  position: absolute;
+  width: 370px;
+  right: 84px;
+  bottom: 80px;
+  margin-right: -100%;
+  z-index: 3;
+}
+
+.hand {
+  position: absolute;
+  width: 640px;
+  bottom: 230px;
+  left: 56px;
   z-index: 0;
 }
 
-.love {
-  width: 200px;
+.left-voucher {
   position: absolute;
-  top: 40px;
-  left: -200px;
+  width: 120px;
+  bottom: 295px;
+  left: 290px;
+  z-index: 1;
+  transform-origin: bottom center;
+}
+.right-voucher {
+  position: absolute;
+  width: 200px;
+  bottom: 230px;
+  left: 280px;
   z-index: 2;
+  transform-origin: bottom center;
 }
 
-.emoji1 {
+.hand-coin {
+  position: absolute;
+  bottom: 300px;
   width: 100px;
-  position: absolute;
-  bottom: 680px;
-  left: calc(120px - 3rem);
-  z-index: 2;
-}
-
-.emoji2 {
-  width: 350px;
-  position: absolute;
-  bottom: calc(110px - 7rem);
-  left: calc(170px + 6rem);
-  opacity: 0.3;
-  z-index: 2;
-}
-
-.emoji3 {
-  width: 200px;
-  position: absolute;
-  bottom: calc(40px - 2rem);
-  right: calc(20px - 2rem);
+  left: 310px;
   opacity: 0;
-  z-index: 2;
+  z-index: 1;
 }
 
-.zig {
-  width: 200px;
+.coin {
   position: absolute;
-  bottom: 64px;
-  left: 50%;
-  margin-left: -100px;
-  opacity: 0;
-  z-index: 2;
 }
 
-.ball {
-  width: 200px;
-  position: absolute;
-  bottom: calc(10px - 3rem);
-  left: 40px;
-  z-index: 2;
+.coin1 {
+  top: 96px;
+  right: 64px;
+  width: 64px;
 }
 
-.text-box {
-  position: absolute;
-  top: 290px;
-  left: 64px;
-  div {
-    margin-left: calc(-130%);
-  }
+.coin2 {
+  top: 150px;
+  right: 120px;
+  width: 100px;
+}
+
+.coin3 {
+  top: 450px;
+  right: 120px;
+  width: 108px;
+}
+
+.coin4 {
+  top: 600px;
+  right: 120px;
+  width: 100px;
 }
 
 .active {
-  .ball {
-    animation: ballMove 5s linear infinite;
+  .coin {
+    animation: upDown 3s linear infinite;
+  }
+  .hand-coin1 {
+    animation: handeCoin1UpDown 5s linear infinite;
+  }
+  .hand-coin2 {
+    animation: handeCoin2UpDown 5s linear infinite;
+  }
+  .hand-coin3 {
+    animation: handeCoin3UpDown 5s linear infinite;
+  }
+  .hand-coin4 {
+    animation: handeCoin4UpDown 5s linear infinite;
   }
 }
 
-@keyframes ballMove {
+@keyframes handeCoin1UpDown {
   0% {
-    transform: translate(1px, -3rem);
+    transform: translateY(-2.3rem) translateX(-1rem);
   }
-  20% {
-    transform: translate(20px, -2.9rem);
+  50% {
+    transform: translateY(-2.415rem) translateX(-1.05rem);
   }
-  40% {
-    transform: translate(40px, -3rem);
+}
+
+@keyframes handeCoin2UpDown {
+  0% {
+    transform: translateY(-3.6rem);
   }
-  60% {
-    transform: translate(40px, -3.1rem);
+  50% {
+    transform: translateY(-3.78rem);
   }
-  80% {
-    transform: translate(20px, -3.1rem);
+}
+
+@keyframes handeCoin3UpDown {
+  0% {
+    transform: translateY(-2.9rem) translateX(1.4rem);
+  }
+  50% {
+    transform: translateY(-3.045rem) translateX(1.47rem);
+  }
+}
+
+@keyframes handeCoin4UpDown {
+  0% {
+    transform: translateY(-2.5rem) translateX(2.9rem);
+  }
+  50% {
+    transform: translateY(-2.625rem) translateX(3.045rem);
+  }
+}
+
+@keyframes upDown {
+  0% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: 10px;
   }
 }
 </style>

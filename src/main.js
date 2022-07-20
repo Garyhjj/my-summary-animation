@@ -7,19 +7,20 @@ import App from "./App.vue";
 import router from "./router";
 
 import store from "./store";
+import initialize from "./initialize";
 
 import "@/styles/index.scss";
 import "@/components";
 import "@/layout/index.js";
 // svg 图标
 import "@/assets/svg-icons";
-import animation from "@/libs/animation";
-import animation1 from "@/libs/animation2";
+import animationCtr from "@/libs/animation-controller";
 
 Vue.config.productionTip = false;
 
-Vue.use(animation);
-Vue.use(animation1, router);
+Vue.use(animationCtr, router);
+
+initialize({ Vue, router, store });
 
 new Vue({
   router,

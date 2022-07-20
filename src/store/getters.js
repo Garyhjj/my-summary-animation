@@ -8,6 +8,7 @@ const getters = {
   userId: state => state.user.userId,
   role: state => state.user.role,
   theme: state => state.settings.theme,
-  isDarkTheme: state => state.settings.theme === "dark"
+  isDarkTheme: state => state.settings.theme === "dark",
+  summaryData: state => state.app.summaryData
 };
 export default getters;

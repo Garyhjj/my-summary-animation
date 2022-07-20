@@ -1,6 +1,6 @@
 export default {
   install(vue, router) {
-    const animationCtr = vue.prototype.$animation1 = new AnimationContorller(router);
+    const animationCtr = vue.prototype.$animationCtr = new AnimationContorller(router);
     animationCtr.bindEl(window.document.body);
   }
 };
@@ -8,7 +8,7 @@ export default {
 class AnimationContorller {
   constructor(router) {
     this.activeIdx = -1;
-    this.routePathList = ["/index", "/page2"];
+    this.routePathList = [];
     this.activeRouteIdx = 0;
     this.animations = [];
     this.shouldWait = false; // 是否开启等待每一次动画完成才进行下一个，不开启时locked无效
@@ -17,6 +17,11 @@ class AnimationContorller {
     this.goingNext = true; // 是否往前走
     this.locked = true; // 每个页面初始化后要先解锁才能开始
     this.router = router;
+    this.bgAudio = "";
+    this.audio = null;
+    this.loaded = false;
+    this.images = [];
+    this.progressCallback = () => {};
     this.beforeGoBack = () => Promise.resolve();
   }
 
@@ -63,6 +68,75 @@ class AnimationContorller {
     return () => {
       removeFns.forEach((fn) => fn());
     };
+  }
+
+  preloadAssets() {
+    this.preloadBgAudio();
+    const flatImages = [];
+    this.images.forEach(o => {
+      for (const key in o) {
+        flatImages.push(this.preloadImg(o[key]));
+      }
+    });
+    const total = flatImages.length + 1;
+    let loadedCount = 0;
+    const patchAddCountPromise = (p) => p.then(res => {
+      loadedCount++;
+      this.progressCallback(loadedCount, total);
+      if (loadedCount === total) {
+        this.loaded = true;
+      }
+      return res;
+    });
+    this.progressCallback(loadedCount, total);
+    Promise.all([this.preloadBgAudio(), ...flatImages].map(patchAddCountPromise));
+  }
+
+  onProgress(fn) {
+    this.progressCallback = fn;
+  }
+
+  preloadBgAudio() {
+    return new Promise((resolve, reject) => {
+      if (this.bgAudio) {
+        const audio = document.createElement("audio");
+        audio.style.display = "none";
+        audio.autoplay = true;
+        audio.addEventListener("canplaythrough", () => {
+          resolve(audio);
+        });
+        audio.addEventListener("ended", () => {
+          audio.play();
+        });
+        audio.onerror = (err) => reject(err);
+        // window.addEventListener("click", () => audio.play());
+        document.body.appendChild(audio);
+        audio.src = this.bgAudio;
+        audio.load();
+        this.audio = audio;
+      }
+    });
+  }
+
+  playAudio() {
+    this.audio.play();
+  }
+
+  preloadImg(url) {
+    return new Promise(resolve => {
+      var img = new Image();
+      img.onload = function() {
+        if (this.complete === true) {
+          resolve(url);
+          img = null;
+        }
+      };
+      img.onerror = function() {
+        resolve(false);
+        img = null;
+      };
+      img.src = url;
+    });
   }
 
   setAnimations(ls) {
