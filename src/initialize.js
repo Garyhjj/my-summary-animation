@@ -11,6 +11,7 @@ export default function({ store, router, Vue }) {
 
   router.beforeEach((to, from, next) => {
     if (!loaded) {
+      console.log(to, to.query);
       loaded = true;
       store.dispatch("app/updateSummaryData", to.query);
     }

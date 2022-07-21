@@ -74,7 +74,6 @@ class AnimationContorller {
   }
 
   preloadAssets() {
-    this.preloadBgAudio();
     const flatImages = [];
     this.images.forEach(o => {
       for (const key in o) {
@@ -107,7 +106,7 @@ class AnimationContorller {
       if (this.bgAudio) {
         const audio = document.createElement("audio");
         audio.style.display = "none";
-        audio.autoplay = true;
+        audio.preload = "auto";
         audio.addEventListener("canplaythrough", () => {
           resolve(audio);
         });
@@ -115,10 +114,9 @@ class AnimationContorller {
           audio.play();
         });
         audio.onerror = (err) => reject(err);
-        // window.addEventListener("click", () => audio.play());
-        document.body.appendChild(audio);
         audio.src = this.bgAudio;
         audio.load();
+        document.body.appendChild(audio);
         this.audio = audio;
       }
     });

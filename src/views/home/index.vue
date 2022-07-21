@@ -2,7 +2,7 @@
   <div class="back-container page1" :class="{hidden: leaved, active: active}">
 
      <div class="text-box">
-      <div class="jt-title name">Hi, Octavia Chong</div>
+      <div class="jt-title name">Hi, {{summaryData.name}}</div>
       <div class="jt-sub-title line1">This is your 2022</div>
       <div class="jt-sub-title line2">Journey With us</div>
      </div>
@@ -19,6 +19,7 @@
 
 <script>
 import anime from "animejs";
+import { mapGetters } from "vuex";
 import { page1Assets } from "../../config";
 
 export default {
@@ -33,6 +34,9 @@ export default {
       active: false,
       assets: page1Assets
     };
+  },
+  computed: {
+    ...mapGetters(["summaryData"])
   },
   mounted() {
     // this.$el.appendChild(this.assets.wave);
@@ -201,7 +205,7 @@ export default {
 };
 </script>
 
-<style style lang="scss" scoped>
+<style lang="scss" scoped>
 .back-container {
   height: 100%;
   background: white;
@@ -284,6 +288,7 @@ export default {
   position: absolute;
   top: 290px;
   left: 64px;
+  z-index: 9;
   div {
     margin-left: calc(-130%);
   }

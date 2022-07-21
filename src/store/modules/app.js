@@ -1,7 +1,9 @@
 
 const state = {
   device: "desktop",
-  summaryData: {}
+  summaryData: {
+    name: "Octavia Chong"
+  }
 };
 
 const mutations = {
@@ -9,7 +11,7 @@ const mutations = {
     state.device = device;
   },
   UPDATE_SUMMARY_DATA: (state, data) => {
-    state.summaryData = data;
+    state.summaryData = { ...state.summaryData, ...data };
   }
 };
 

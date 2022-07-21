@@ -63,7 +63,8 @@ const routes = [
 const createRouter = () =>
   new VueRouter({
     scrollBehavior: () => ({ y: 0 }),
-    routes
+    routes,
+    mode: "history"
   });
 
 const router = createRouter();

@@ -240,7 +240,7 @@ export default {
 };
 </script>
 
-<style style lang="scss" scoped>
+<style lang="scss" scoped>
 .back-container {
   height: 100%;
   padding: 100px 48px;
