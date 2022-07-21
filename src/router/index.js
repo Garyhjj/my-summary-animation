@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import mainLayout from "../layout/index.vue";
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
-// const _import = require("@/libs/util.import." + process.env.NODE_ENV);
+const _import = require("@/libs/util.import." + process.env.NODE_ENV);
 
 const notLazyImport = require("@/libs/util.import.development");
 
@@ -50,7 +50,7 @@ const routes = [
       {
         path: "loading",
         name: "loading",
-        component: notLazyImport("loading")
+        component: _import("loading")
       }
     ]
   },

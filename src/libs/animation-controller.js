@@ -26,12 +26,13 @@ class AnimationContorller {
   }
 
   bindEl(el) {
+    let startTime = 0;
     let startY = -1;
     let endY = -1;
     const removeFns = [];
 
     const checkFn = () => {
-      if (startY > 0 && endY > 0 && startY !== endY) {
+      if (startY > 0 && endY > 0 && startY !== endY && Math.abs(endY - startY) > 80 && Date.now() - startTime < 800) {
         if (endY < startY) {
           this.next();
         } else {
@@ -48,6 +49,7 @@ class AnimationContorller {
       endY = -1;
       const { clientY } = e;
       startY = clientY;
+      startTime = Date.now();
     });
     bindEvent("mousemove", (e) => {
       const { clientY } = e;
@@ -59,6 +61,7 @@ class AnimationContorller {
       endY = -1;
       const { clientY } = e.touches[0];
       startY = clientY;
+      startTime = Date.now();
     });
     bindEvent("touchmove", (e) => {
       const { clientY } = e.touches[0];
@@ -75,7 +78,10 @@ class AnimationContorller {
     const flatImages = [];
     this.images.forEach(o => {
       for (const key in o) {
-        flatImages.push(this.preloadImg(o[key]));
+        flatImages.push(this.preloadImg(o[key]).then((data) => {
+          o[key] = data;
+          return data;
+        }));
       }
     });
     const total = flatImages.length + 1;
@@ -125,9 +131,10 @@ class AnimationContorller {
   preloadImg(url) {
     return new Promise(resolve => {
       var img = new Image();
-      img.onload = function() {
-        if (this.complete === true) {
-          resolve(url);
+      img.onload = () => {
+        if (img.complete === true) {
+          const ext = url.split(".").pop();
+          resolve(ext.toLowerCase() === "gif" ? img : this.getImgBase64(img));
           img = null;
         }
       };
@@ -137,6 +144,15 @@ class AnimationContorller {
       };
       img.src = url;
     });
+  }
+
+  getImgBase64(img) {
+    const canvas = document.createElement("canvas");
+    const { height, width } = img;
+    canvas.height = height;
+    canvas.width = width;
+    canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL("image/" + img.src.split(".").pop());
   }
 
   setAnimations(ls) {
@@ -177,6 +193,9 @@ class AnimationContorller {
   }
 
   next() {
+    if (this.animations.length === 0) {
+      return;
+    }
     this.hasStarted = true;
     if (this.isWaiting()) return;
     if (this.goingNext) {
@@ -243,6 +262,7 @@ class AnimationContorller {
     this.router.push(this.routePathList[this.activeRouteIdx]);
     this.activeIdx = -1;
     this.hasStarted = false;
+    this.animations = [];
     this.currentAnimation = null;
   }
 }

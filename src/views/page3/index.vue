@@ -19,27 +19,28 @@
         <div class="jt-text line6 line"><span class="jt-value">12</span>vouchers</div>
       </div>
      </div>
-     <img draggable="false" class="small-box" src="~@/assets/images/3rd Links/Small Box.png" alt="">
-     <img draggable="false" class="big-box" src="~@/assets/images/3rd Links/Big Box-03.png" alt="">
-     <img draggable="false" class="hand" style="transform: scale(0)" src="~@/assets/images/3rd Links/Hands-04.png" alt="">
-     <img draggable="false" class="left-voucher" style="transform: scale(0)" src="~@/assets/images/3rd Links/Big Voucher-01.png" alt="">
-     <img draggable="false" class="right-voucher" style="transform: scale(0)" src="~@/assets/images/3rd Links/Small voucher.png" alt="">
+     <img draggable="false" class="small-box" :src="assets.smallBox" alt="">
+     <img draggable="false" class="big-box" :src="assets.bigBox" alt="">
+     <img draggable="false" class="hand" style="transform: scale(0)" :src="assets.hand" alt="">
+     <img draggable="false" class="left-voucher" style="transform: scale(0)" :src="assets.leftVoucher" alt="">
+     <img draggable="false" class="right-voucher" style="transform: scale(0)" :src="assets.rightVoucher" alt="">
 
-     <img draggable="false" class="hand-coin hand-coin1" src="~@/assets/images/3rd Links/Coins on hand_1.png" alt="">
-     <img draggable="false" class="hand-coin hand-coin2" src="~@/assets/images/3rd Links/Coins on hand_2.png" alt="">
-     <img draggable="false" class="hand-coin hand-coin3" src="~@/assets/images/3rd Links/Coins on hand_3-04.png" alt="">
-     <img draggable="false" class="hand-coin hand-coin4" src="~@/assets/images/3rd Links/Coins on hand_4-04.png" alt="">
+     <img draggable="false" class="hand-coin hand-coin1" :src="assets.handCoin1" alt="">
+     <img draggable="false" class="hand-coin hand-coin2" :src="assets.handCoin2" alt="">
+     <img draggable="false" class="hand-coin hand-coin3" :src="assets.handCoin3" alt="">
+     <img draggable="false" class="hand-coin hand-coin4" :src="assets.handCoin4" alt="">
 
-     <img draggable="false" class="coin coin1" style="transform: translateY(-96px)" src="~@/assets/images/3rd Links/Coin 1.png" alt="">
-     <img draggable="false" class="coin coin2" style="transform: translateY(-150px) rotate(-40deg)" src="~@/assets/images/3rd Links/Coin 2.png" alt="">
-     <img draggable="false" class="coin coin3" style="transform: translateY(-450px)" src="~@/assets/images/3rd Links/Coin 3-01.png" alt="">
-     <img draggable="false" class="coin coin4" style="transform: translateY(-600px)" src="~@/assets/images/3rd Links/Coin 4-01.png" alt="">
+     <img draggable="false" class="coin coin1" style="transform: translateY(-96px)" :src="assets.coin1" alt="">
+     <img draggable="false" class="coin coin2" style="transform: translateY(-150px) rotate(-40deg)" :src="assets.coin2" alt="">
+     <img draggable="false" class="coin coin3" style="transform: translateY(-450px)" :src="assets.coin3" alt="">
+     <img draggable="false" class="coin coin4" style="transform: translateY(-600px)" :src="assets.coin4" alt="">
   </div>
 </template>
 
 <script>
 import anime from "animejs";
 import { animeFinished } from "../../libs";
+import { page3Assets } from "../../config";
 
 export default {
   props: {
@@ -49,7 +50,8 @@ export default {
     return {
       loopAnimations: [],
       active: false,
-      animeList: []
+      animeList: [],
+      assets: page3Assets
     };
   },
   mounted() {

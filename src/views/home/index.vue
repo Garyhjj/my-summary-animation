@@ -35,6 +35,8 @@ export default {
     };
   },
   mounted() {
+    // this.$el.appendChild(this.assets.wave);
+    // this.assets.wave.style = "width: 200px;position: absolute;bottom: 64px;left: 50%;margin-left: -100px;z-index: 2;";
     const tl = anime.timeline({
       easing: "easeOutExpo",
       duration: 1500,

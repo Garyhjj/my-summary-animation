@@ -1,12 +1,12 @@
-import { page1Assets } from "./config";
+import { page1Assets, page2Assets, page3Assets, page4Assets, page5Assets } from "./config";
 
 export default function({ store, router, Vue }) {
   let loaded = false;
   const animationCtr = Vue.prototype.$animationCtr;
-  const routePathList = ["/index", "/page2", "/page3", "/page4"];
+  const routePathList = ["/index", "/page2", "/page3", "/page4", "/page5"];
   animationCtr.routePathList = routePathList;
   animationCtr.bgAudio = require("@/assets/audios/bg.mp3");
-  animationCtr.images = [page1Assets];
+  animationCtr.images = [page1Assets, page2Assets, page3Assets, page4Assets, page5Assets];
   animationCtr.preloadAssets();
 
   router.beforeEach((to, from, next) => {

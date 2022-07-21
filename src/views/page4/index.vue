@@ -25,21 +25,22 @@
       </div>
      </div>
 
-     <img draggable="false" class="box box1" style="transform: translateY(-348px) rotate(-40deg)" src="~@/assets/images/4rd Links/Box 1.png" alt="">
-     <img draggable="false" class="clould clould1" style="transform: translateX(3.5rem)" src="~@/assets/images/4rd Links/Cloud 1.png" alt="">
+     <img draggable="false" class="box box1" style="transform: translateY(-348px) rotate(-40deg)" :src="assets.box1" alt="">
+     <img draggable="false" class="clould clould1" style="transform: translateX(3.5rem)" :src="assets.clould1" alt="">
 
-     <img draggable="false" class="box box2" style="transform: translateY(-600px)" src="~@/assets/images/4rd Links/Box 2.png" alt="">
-     <img draggable="false" class="clould clould2" style="transform: translateX(4.3rem)"  src="~@/assets/images/4rd Links/Cloud 2.png" alt="">
+     <img draggable="false" class="box box2" style="transform: translateY(-600px)" :src="assets.box2" alt="">
+     <img draggable="false" class="clould clould2" style="transform: translateX(4.3rem)"  :src="assets.clould2" alt="">
 
-     <img draggable="false" class="big-box box3"  style="transform: translateY(-100vh); opacity: 0;" src="~@/assets/images/4rd Links/Box 3.png" alt="">
-     <img draggable="false" class="clould3" style="transform: translateY(100px); opacity: 0;"  src="~@/assets/images/4rd Links/Cloud 3.png" alt="">
+     <img draggable="false" class="big-box box3"  style="transform: translateY(-100vh); opacity: 0;" :src="assets.box3" alt="">
+     <img draggable="false" class="clould3" style="transform: translateY(100px); opacity: 0;"  :src="assets.clould3" alt="">
 
-     <img draggable="false" class="plants" style="transform: translateY(3.8rem) translateX(-3.8rem); opacity: 0.4;" src="~@/assets/images/4rd Links/Plants.png" alt="">
+     <img draggable="false" class="plants" style="transform: translateY(3.8rem) translateX(-3.8rem); opacity: 0.4;" :src="assets.plants" alt="">
   </div>
 </template>
 
 <script>
 import anime from "animejs";
+import { page4Assets } from "../../config";
 import { animeFinished } from "../../libs";
 
 export default {
@@ -53,7 +54,8 @@ export default {
       animeList: [],
       textStyle: {
         transform: "scaleY(1.6)"
-      }
+      },
+      assets: page4Assets
     };
   },
   mounted() {

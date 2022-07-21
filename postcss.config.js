@@ -1,6 +1,6 @@
 module.exports = {
   plugins: {
-    autoprefixer: { browsers: "last 5 version" },
+    // autoprefixer: { browsers: "last 5 version" },
     // flexible配置
     "postcss-pxtorem": {
       "rootValue": 75, // 设计稿宽度的1/10

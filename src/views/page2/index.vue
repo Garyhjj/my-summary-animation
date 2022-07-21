@@ -20,18 +20,19 @@
      </div>
      <div class="text-modal"></div>
 
-     <img draggable="false" class="clock" :class="{jitter : active&&shouldCloudMove}" src="~@/assets/images/2nd Links/Clock.png" alt="">
-     <img draggable="false" class="dispatcher" src="~@/assets/images/2nd Links/Dispatcher.png" alt="">
-     <img draggable="false" class="dispatcher-out" src="~@/assets/images/2nd Links/Dispatcher.png" alt="">
-     <img draggable="false" class="cloud-left" src="~@/assets/images/2nd Links/Cloud 2.png" alt="">
-     <img draggable="false" class="cloud-right" src="~@/assets/images/2nd Links/Cloud 1.png" alt="">
-     <img draggable="false" class="cloud-left-out" src="~@/assets/images/2nd Links/Cloud 2.png" alt="">
-     <img draggable="false" class="cloud-right-out" src="~@/assets/images/2nd Links/Cloud 1.png" alt="">
+     <img draggable="false" class="clock" :class="{jitter : active&&shouldCloudMove}" :src="assets.clock" alt="">
+     <img draggable="false" class="dispatcher" :src="assets.dispatcher" alt="">
+     <img draggable="false" class="dispatcher-out" :src="assets.dispatcher" alt="">
+     <img draggable="false" class="cloud-left" :src="assets.cloudLeft" alt="">
+     <img draggable="false" class="cloud-right" :src="assets.cloudRight" alt="">
+     <img draggable="false" class="cloud-left-out" :src="assets.cloudLeft" alt="">
+     <img draggable="false" class="cloud-right-out" :src="assets.cloudRight" alt="">
   </div>
 </template>
 
 <script>
 import anime from "animejs";
+import { page2Assets } from "../../config";
 import { animeFinished } from "../../libs";
 
 export default {
@@ -47,7 +48,8 @@ export default {
       personAfterEnter: false,
       cloudLeftAfterEnter: false,
       cloudRightAfterEnter: false,
-      shouldCloudMove: true
+      shouldCloudMove: true,
+      assets: page2Assets
     };
   },
   mounted() {
@@ -127,7 +129,7 @@ export default {
 
     const cloudLeftForOut = anime({
       targets: ".page2 .cloud-left-out",
-      marginBottom: "-15rem", opacity: 0.8,
+      marginBottom: "15rem", opacity: 0.8,
       easing: "easeOutExpo",
       duration: 1000,
       delay: 500,
