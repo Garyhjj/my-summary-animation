@@ -2,7 +2,17 @@
 const state = {
   device: "desktop",
   summaryData: {
-    name: "Octavia Chong"
+    name: "Octavia Chong",
+    parcels1: 386,
+    parcels2: 1385,
+    parcels3: 27,
+    cost: 30,
+    vouchers: 12,
+    registeredOn: "18 JANUARY 2020",
+    month1: "MAY",
+    parcel4: 10,
+    month2: "NOVEMBER",
+    parcel5: 7
   }
 };
 

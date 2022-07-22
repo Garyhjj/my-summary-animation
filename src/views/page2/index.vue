@@ -1,8 +1,7 @@
 <template>
   <div
       class="back-container page2"
-      :class="{leaving: leaved,
-                active: active,
+      :class="{active: active,
                'person-active': personAfterEnter,
                'cloud-left-active': cloudLeftAfterEnter,
                'cloud-right-active': cloudRightAfterEnter}">
@@ -10,12 +9,12 @@
      <div class="text-box">
       <div class="block">
         <div class="jt-sub-title title">Total Delivered</div>
-        <div class="jt-text">International<span class="jt-value">386</span>parcels</div>
-        <div class="jt-text">Domestic<span class="jt-value">1385</span>parcels</div>
+        <div class="jt-text">International<span class="jt-value">{{summaryData.parcels1}}</span>parcels</div>
+        <div class="jt-text">Domestic<span class="jt-value">{{summaryData.parcels2}}</span>parcels</div>
       </div>
       <div class="block">
         <div class="jt-sub-title title">Total Received</div>
-        <div class="jt-text"><span class="jt-value">27</span>parcels</div>
+        <div class="jt-text"><span class="jt-value">{{summaryData.parcels3}}</span>parcels</div>
       </div>
      </div>
      <div class="text-modal"></div>
@@ -25,8 +24,8 @@
      <img draggable="false" class="dispatcher-out" :src="assets.dispatcher" alt="">
      <img draggable="false" class="cloud-left" :src="assets.cloudLeft" alt="">
      <img draggable="false" class="cloud-right" :src="assets.cloudRight" alt="">
-     <img draggable="false" class="cloud-left-out" :src="assets.cloudLeft" alt="">
-     <img draggable="false" class="cloud-right-out" :src="assets.cloudRight" alt="">
+     <div class="cloud-left-out"><img draggable="false" :src="assets.cloudLeft" alt=""></div>
+     <div class="cloud-right-out"><img draggable="false" :src="assets.cloudRight" alt=""></div>
   </div>
 </template>
 
@@ -34,6 +33,7 @@
 import anime from "animejs";
 import { page2Assets } from "../../config";
 import { animeFinished } from "../../libs";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       loopAnimations: [],
-      leaved: false,
       active: false,
       animeList: [],
       personAfterEnter: false,
@@ -51,6 +50,9 @@ export default {
       shouldCloudMove: true,
       assets: page2Assets
     };
+  },
+  computed: {
+    ...mapGetters(["summaryData"])
   },
   mounted() {
     const textAnime = anime({
@@ -203,7 +205,6 @@ export default {
           a.pause();
         });
         this.active = false;
-        this.leaved = true;
         return this.play().then(() => { this.active = false; });
       };
       animationCtr.setAnimations([animationCtr.createAnimation(() => {
@@ -211,11 +212,9 @@ export default {
           a.pause();
         });
         this.active = false;
-        this.leaved = true;
         this.loopAnimations = [];
         return this.play().then(() => { this.active = false; });
       }, () => {
-        this.leaved = false;
         return this.play().then(() => { this.active = true; });
       })]);
       this.start().then(() => {
@@ -257,6 +256,10 @@ export default {
   padding: 60px 48px;
   background: white;
   overflow: hidden;
+}
+
+div > img {
+  width: 100%;
 }
 
 .block {
@@ -357,10 +360,8 @@ export default {
   .cloud-left-out {
     display: block;
   }
-  &:not(.leaving) {
-    .cloud-left-out {
-      animation: cloudLeftMove 5s linear infinite;
-    }
+  .cloud-left-out img {
+    animation: cloudLeftMove 5s linear infinite;
   }
 }
 
@@ -371,11 +372,9 @@ export default {
   .cloud-right-out {
     display: block;
   }
-  &:not(.leaving) {
-    .cloud-right-out {
-      animation: cloudLeftMove 8s linear infinite;
-      animation-direction: reverse;
-    }
+  .cloud-right-out img {
+    animation: cloudLeftMove 8s linear infinite;
+    animation-direction: reverse;
   }
 }
 

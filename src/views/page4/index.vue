@@ -8,30 +8,33 @@
         <div class="title">
           <div class="jt-sub-title line1 line" :style="textStyle">Registered on</div>
         </div>
-        <div class="line2 line" :style="textStyle"><span class="jt-value">18</span><span class="jt-value">JANUARY</span><span class="jt-value">2020</span></div>
+        <div class="line2 line" :style="textStyle">
+          <span class="jt-value" v-for="item in summaryData.registeredOn.split(' ')" :key="item">{{item}}</span>
+        </div>
       </div>
       <div class="block">
         <div class="title">
           <div class="jt-sub-title line3 line" :style="textStyle">Highest Orders</div>
         </div>
-        <div class="jt-text line4 line" :style="textStyle"><span class="jt-value">MAY</span>(10 parcels)</div>
+        <div class="jt-text line4 line" :style="textStyle"><span class="jt-value">{{summaryData.month1}}</span>({{summaryData.parcels4}} parcels)</div>
       </div>
       <div class="block">
         <div class="title">
           <div class="jt-sub-title line5 line" :style="textStyle">Highest Orders</div>
           <div class="jt-sub-title line6 line" :style="textStyle">Received on</div>
         </div>
-        <div class="jt-text line7 line"><span class="jt-value">NOVEMBER</span>(7 parcels)</div>
+        <div class="jt-text line7 line"><span class="jt-value">{{summaryData.month2}}</span>({{summaryData.parcels5}} parcels)</div>
       </div>
      </div>
 
-     <img draggable="false" class="box box1" style="transform: translateY(-348px) rotate(-40deg)" :src="assets.box1" alt="">
-     <img draggable="false" class="clould clould1" style="transform: translateX(3.5rem)" :src="assets.clould1" alt="">
+     <div class="box box1" style="transform: translateY(-348px) rotate(-40deg)"><img draggable="false" :src="assets.box1" alt=""></div>
 
-     <img draggable="false" class="box box2" style="transform: translateY(-600px)" :src="assets.box2" alt="">
-     <img draggable="false" class="clould clould2" style="transform: translateX(4.3rem)"  :src="assets.clould2" alt="">
+     <div class="clould clould1" style="transform: translateX(3.5rem)"><img draggable="false" :src="assets.clould1" alt=""></div>
 
-     <img draggable="false" class="big-box box3"  style="transform: translateY(-100vh); opacity: 0;" :src="assets.box3" alt="">
+     <div class="box box2" style="transform: translateY(-600px)"><img draggable="false" :src="assets.box2" alt=""></div>
+     <div class="clould clould2" style="transform: translateX(4.3rem)"><img draggable="false" :src="assets.clould2" alt=""></div>
+
+     <div  class="big-box box3" style="transform: translateY(-100vh); opacity: 0;"><img draggable="false" :src="assets.box3" alt=""></div>
      <img draggable="false" class="clould3" style="transform: translateY(100px); opacity: 0;"  :src="assets.clould3" alt="">
 
      <img draggable="false" class="plants" style="transform: translateY(3.8rem) translateX(-3.8rem); opacity: 0.4;" :src="assets.plants" alt="">
@@ -40,6 +43,7 @@
 
 <script>
 import anime from "animejs";
+import { mapGetters } from "vuex";
 import { page4Assets } from "../../config";
 import { animeFinished } from "../../libs";
 
@@ -58,6 +62,9 @@ export default {
       assets: page4Assets
     };
   },
+  computed: {
+    ...mapGetters(["summaryData"])
+  },
   mounted() {
     this.animeList.push(this.initTextAnime());
     this.animeList.push(...this.initBox1Anime());
@@ -73,21 +80,16 @@ export default {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
-        this.active = false;
-        this.leaved = true;
-        return this.play().then(() => { this.active = false; });
+        return this.play();
       };
       animationCtr.setAnimations([animationCtr.createAnimation(() => {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
-        this.active = false;
-        this.leaved = true;
         this.loopAnimations = [];
-        return this.play().then(() => { this.active = false; });
+        return this.play();
       }, () => {
-        this.leaved = false;
-        return this.play().then(() => { this.active = true; });
+        return this.play();
       })]);
       this.start().then(() => {
         animationCtr.locked = false;
@@ -201,6 +203,9 @@ export default {
   background: white;
   overflow: hidden;
 }
+div > img {
+  width: 100%;
+}
 
 .block {
   margin-bottom: 88px;
@@ -273,13 +278,13 @@ export default {
 }
 
 .active {
-  .box {
+  .box img {
     animation: upDown 3s linear infinite;
   }
-  .clould {
+  .clould img {
     animation: scaleFrames 3s linear infinite;
   }
-  .big-box {
+  .big-box img {
     animation: upDown2 3s linear infinite;
   }
 }

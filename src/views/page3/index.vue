@@ -9,14 +9,14 @@
           <div class="jt-sub-title line1 line">Total</div>
           <div class="jt-sub-title line2 line">Delivery Cost</div>
         </div>
-        <div class="jt-value line3 line"><span>RM30</span></div>
+        <div class="jt-value line3 line"><span>RM{{summaryData.cost}}</span></div>
       </div>
       <div class="block">
         <div class="title">
           <div class="jt-sub-title line4 line">Used</div>
           <div class="jt-sub-title line5 line">Vouchers</div>
         </div>
-        <div class="jt-text line6 line"><span class="jt-value">12</span>vouchers</div>
+        <div class="jt-text line6 line"><span class="jt-value">{{summaryData.vouchers}}</span>vouchers</div>
       </div>
      </div>
      <img draggable="false" class="small-box" :src="assets.smallBox" alt="">
@@ -25,20 +25,21 @@
      <img draggable="false" class="left-voucher" style="transform: scale(0)" :src="assets.leftVoucher" alt="">
      <img draggable="false" class="right-voucher" style="transform: scale(0)" :src="assets.rightVoucher" alt="">
 
-     <img draggable="false" class="hand-coin hand-coin1" :src="assets.handCoin1" alt="">
-     <img draggable="false" class="hand-coin hand-coin2" :src="assets.handCoin2" alt="">
-     <img draggable="false" class="hand-coin hand-coin3" :src="assets.handCoin3" alt="">
-     <img draggable="false" class="hand-coin hand-coin4" :src="assets.handCoin4" alt="">
+     <div class="hand-coin hand-coin1"><img draggable="false" :src="assets.handCoin1" alt=""></div>
+     <div class="hand-coin hand-coin2"><img draggable="false" :src="assets.handCoin2" alt=""></div>
+     <div class="hand-coin hand-coin3"><img draggable="false" :src="assets.handCoin3" alt=""></div>
+     <div class="hand-coin hand-coin4"><img draggable="false" :src="assets.handCoin4" alt=""></div>
 
-     <img draggable="false" class="coin coin1" style="transform: translateY(-96px)" :src="assets.coin1" alt="">
-     <img draggable="false" class="coin coin2" style="transform: translateY(-150px) rotate(-40deg)" :src="assets.coin2" alt="">
-     <img draggable="false" class="coin coin3" style="transform: translateY(-450px)" :src="assets.coin3" alt="">
-     <img draggable="false" class="coin coin4" style="transform: translateY(-600px)" :src="assets.coin4" alt="">
+     <div class="coin coin1" style="transform: translateY(-96px)"><img draggable="false" :src="assets.coin1" alt=""></div>
+     <div class="coin coin2" style="transform: translateY(-150px) rotate(-40deg)"><img draggable="false" :src="assets.coin2" alt=""></div>
+     <div class="coin coin3" style="transform: translateY(-450px)"><img draggable="false" :src="assets.coin3" alt=""></div>
+     <div class="coin coin4" style="transform: translateY(-600px)"><img draggable="false" :src="assets.coin4" alt=""></div>
   </div>
 </template>
 
 <script>
 import anime from "animejs";
+import { mapGetters } from "vuex";
 import { animeFinished } from "../../libs";
 import { page3Assets } from "../../config";
 
@@ -53,6 +54,9 @@ export default {
       animeList: [],
       assets: page3Assets
     };
+  },
+  computed: {
+    ...mapGetters(["summaryData"])
   },
   mounted() {
     const smallBoxAnime = anime({
@@ -92,21 +96,16 @@ export default {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
-        this.active = false;
-        this.leaved = true;
-        return this.play().then(() => { this.active = false; });
+        return this.play();
       };
       animationCtr.setAnimations([animationCtr.createAnimation(() => {
         this.loopAnimations.forEach(a => {
           a.pause();
         });
-        this.active = false;
-        this.leaved = true;
         this.loopAnimations = [];
-        return this.play().then(() => { this.active = false; });
+        return this.play();
       }, () => {
-        this.leaved = false;
-        return this.play().then(() => { this.active = true; });
+        return this.play();
       })]);
       this.start().then(() => {
         animationCtr.locked = false;
@@ -248,6 +247,10 @@ export default {
   overflow: hidden;
 }
 
+div > img {
+  width: 100%;
+}
+
 .block {
   margin-bottom: 88px;
   .title {
@@ -342,56 +345,56 @@ export default {
 }
 
 .active {
-  .coin {
+  .coin img {
     animation: upDown 3s linear infinite;
   }
-  .hand-coin1 {
+  .hand-coin1 img {
     animation: handeCoin1UpDown 5s linear infinite;
   }
-  .hand-coin2 {
+  .hand-coin2 img {
     animation: handeCoin2UpDown 5s linear infinite;
   }
-  .hand-coin3 {
+  .hand-coin3 img {
     animation: handeCoin3UpDown 5s linear infinite;
   }
-  .hand-coin4 {
+  .hand-coin4 img {
     animation: handeCoin4UpDown 5s linear infinite;
   }
 }
 
 @keyframes handeCoin1UpDown {
   0% {
-    transform: translateY(-2.3rem) translateX(-1rem);
+    transform: translateY(0) translateX(0);
   }
   50% {
-    transform: translateY(-2.415rem) translateX(-1.05rem);
+    transform: translateY(-0.115rem) translateX(-0.05rem);
   }
 }
 
 @keyframes handeCoin2UpDown {
   0% {
-    transform: translateY(-3.6rem);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-3.78rem);
+    transform: translateY(-0.18rem);
   }
 }
 
 @keyframes handeCoin3UpDown {
   0% {
-    transform: translateY(-2.9rem) translateX(1.4rem);
+    transform: translateY(0) translateX(0);
   }
   50% {
-    transform: translateY(-3.045rem) translateX(1.47rem);
+    transform: translateY(-0.145rem) translateX(0.07rem);
   }
 }
 
 @keyframes handeCoin4UpDown {
   0% {
-    transform: translateY(-2.5rem) translateX(2.9rem);
+    transform: translateY(0) translateX(0);
   }
   50% {
-    transform: translateY(-2.625rem) translateX(3.045rem);
+    transform: translateY(-0.125rem) translateX(0.145rem);
   }
 }
 

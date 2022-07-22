@@ -1,19 +1,20 @@
 <template>
-  <div class="back-container page1" :class="{hidden: leaved, active: active}">
+  <div class="back-container page1" :class="{ hidden: leaved, active: active }">
 
-     <div class="text-box">
-      <div class="jt-title name">Hi, {{summaryData.name}}</div>
+    <div class="text-box">
+      <div class="jt-title name">Hi, {{ summaryData.name }}</div>
       <div class="jt-sub-title line1">This is your 2022</div>
       <div class="jt-sub-title line2">Journey With us</div>
-     </div>
-    <img draggable="false" class="love" :src="assets.love" alt="">
+    </div>
+    <div class="love" style="transform: scale(0.2) translateX(20rem);"><img draggable="false" :src="assets.love" alt="">
+    </div>
     <img draggable="false" class="person" :src="assets.person" alt="">
     <img draggable="false" class="river" :src="assets.river" alt="">
-    <img draggable="false" class="emoji1" :src="assets.emoji1" alt="">
-    <img draggable="false" class="emoji2" :src="assets.emoji2" alt="">
-    <img draggable="false" class="emoji3" :src="assets.emoji3" alt="">
+    <div class="emoji1"><img draggable="false" :src="assets.emoji1" alt=""></div>
+    <div class="emoji2"><img draggable="false" :src="assets.emoji2" alt=""></div>
+    <div class="emoji3"><img draggable="false" :src="assets.emoji3" alt=""></div>
     <img draggable="false" class="zig" :src="assets.zig" alt="">
-    <img draggable="false" class="ball" :src="assets.ball" alt="">
+    <div class="ball"><img draggable="false" :src="assets.ball" alt=""></div>
   </div>
 </template>
 
@@ -21,6 +22,7 @@
 import anime from "animejs";
 import { mapGetters } from "vuex";
 import { page1Assets } from "../../config";
+import { animeFinished } from "../../libs";
 
 export default {
   props: {
@@ -28,10 +30,10 @@ export default {
   },
   data() {
     return {
-      tl: null,
       loopAnimations: [],
       leaved: false,
       active: false,
+      animeList: [],
       assets: page1Assets
     };
   },
@@ -41,6 +43,16 @@ export default {
   mounted() {
     // this.$el.appendChild(this.assets.wave);
     // this.assets.wave.style = "width: 200px;position: absolute;bottom: 64px;left: 50%;margin-left: -100px;z-index: 2;";
+    const loveAnime = anime({
+      targets: ".page1 .love",
+      keyframes: [
+        { translateX: "-6rem", scale: 0.35, opacity: 1 },
+        { scaleX: -1, translateX: "-7rem", duration: 100 },
+        { translateX: 0, scale: 1, easing: "spring(1, 80, 10, 0)", duration: 800 }
+      ],
+      easing: "linear",
+      duration: 1300
+    });
     const tl = anime.timeline({
       easing: "easeOutExpo",
       duration: 1500,
@@ -58,12 +70,6 @@ export default {
         duration: 700,
         opacity: 1,
         easing: "easeInQuad"
-      }, "-=1500")
-      .add({
-        targets: ".page1 .love",
-        translateX: "calc(100% + 24px)",
-        scale: 1,
-        easing: "spring(1, 80, 10, 0)"
       }, "-=1500")
       .add({
         targets: ".page1 .emoji3",
@@ -116,70 +122,13 @@ export default {
           return;
         }
         this.active = true;
-        this.loopAnimations.push(this.startAutoRotateAnime(".page1 .emoji3"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji1"));
-        this.loopAnimations.push(this.startAutoScaleAnime(".page1 .emoji2"));
       }
     };
-    this.tl = tl;
+    this.animeList.push(loveAnime);
+    this.animeList.push(tl);
     this.registryAnimation();
   },
   methods: {
-    startAutoRotateAnime(targets) {
-      const rotateTl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 6000,
-        loop: true
-      });
-      rotateTl.add({
-        rotate: 50
-      }).add({
-        targets,
-        rotate: 0,
-        endDelay: -3000
-      }, "-=2000");
-      return rotateTl;
-    },
-    startAutoScaleAnime(targets) {
-      const tl = anime.timeline({
-        targets,
-        easing: "easeOutExpo",
-        duration: 3000,
-        loop: true
-      });
-      tl.add({
-        scale: 1.1
-      }).add({
-        targets,
-        scale: 1,
-        endDelay: -1000
-      }, "-=1000");
-      return tl;
-    },
-    startBallAnime(targets) {
-      const tl = anime({
-        targets,
-        easing: "easeOutExpo",
-        keyframes: [
-          {
-            translateX: "0.15rem",
-            translateY: "-2.9rem"
-          },
-          {
-            translateX: "0.3rem",
-            translateY: "-3rem"
-          },
-          {
-            translateX: "0.31rem",
-            translateY: "-3.1rem"
-          }
-        ],
-        duration: 3000,
-        loop: true
-      });
-      return tl;
-    },
     registryAnimation() {
       const animation = this.$animationCtr;
       animation.setAnimations([animation.createAnimation(() => {
@@ -193,13 +142,22 @@ export default {
         this.leaved = false;
         return this.play();
       })]);
-      this.tl.play();
-      this.tl.finished.then(() => { animation.locked = false; });
+      this.start().then(() => { animation.locked = false; });
     },
     play() {
-      this.tl.reverse();
-      this.tl.play();
-      return this.tl.finished;
+      return Promise.all(this.animeList.map(a => {
+        a.reverse();
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
+    },
+    start() {
+      return Promise.all(this.animeList.map(a => {
+        const p = animeFinished(a);
+        a.play();
+        return p;
+      }));
     }
   }
 };
@@ -213,6 +171,10 @@ export default {
   // &.hidden {
   //   height: 0;
   // }
+}
+
+div > img {
+  width: 100%;
 }
 
 .person {
@@ -236,7 +198,9 @@ export default {
   width: 200px;
   position: absolute;
   top: 40px;
-  left: -200px;
+  left: 56px;
+  transform-origin: center center;
+  opacity: 0;
   z-index: 2;
 }
 
@@ -289,32 +253,87 @@ export default {
   top: 290px;
   left: 64px;
   z-index: 9;
+
   div {
     margin-left: calc(-130%);
   }
 }
 
-.active {
-  .ball {
-    animation: ballMove 5s linear infinite;
-  }
+.ball img {
+  animation: ballMove 5s linear infinite;
+}
+
+.love img {
+  animation: loveMove 6s linear infinite;
+}
+
+.emoji1 img, .emoji2 img {
+  animation: emojiScale 3s linear infinite;
+}
+
+.emoji3 img {
+  animation: emojiRotate 6s linear infinite;
 }
 
 @keyframes ballMove {
   0% {
-    transform: translate(1px, -3rem);
+    transform: translate(0, 0);
   }
-  20% {
-    transform: translate(20px, -2.9rem);
+
+  17% {
+    transform: translate(20px, -10px);
   }
-  40% {
-    transform: translate(40px, -3rem);
+
+  33% {
+    transform: translate(40px, 0);
   }
-  60% {
-    transform: translate(40px, -3.1rem);
+
+  50% {
+    transform: translate(40px, 10px);
   }
-  80% {
-    transform: translate(20px, -3.1rem);
+
+  67% {
+    transform: translate(20px, 20px);
+  }
+
+  84% {
+    transform: translate(0, 10px);
+  }
+}
+
+@keyframes loveMove {
+  0% {
+    margin-top: 0;
+    transform: rotate(0);
+  }
+
+  25%,
+  75% {
+    margin-top: 16px;
+    transform: rotate(-9deg);
+  }
+
+  50% {
+    margin-top: 32px;
+    transform: rotate(0);
+  }
+}
+
+@keyframes emojiScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes emojiRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(50deg);
   }
 }
 </style>
