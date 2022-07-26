@@ -30,7 +30,6 @@ export default {
   },
   data() {
     return {
-      loopAnimations: [],
       leaved: false,
       active: false,
       animeList: [],
@@ -132,11 +131,7 @@ export default {
     registryAnimation() {
       const animation = this.$animationCtr;
       animation.setAnimations([animation.createAnimation(() => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
         this.active = false;
-        this.loopAnimations = [];
         return this.play();
       }, () => {
         this.leaved = false;

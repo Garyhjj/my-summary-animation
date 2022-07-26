@@ -21,7 +21,6 @@ export default {
   },
   data() {
     return {
-      loopAnimations: [],
       active: false,
       animeList: [],
       assets: page5Assets
@@ -35,21 +34,14 @@ export default {
   methods: {
     registryAnimation() {
       const animationCtr = this.$animationCtr;
-      animationCtr.beforeGoBack = () => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
+      animationCtr.reverseBeforeGoBack = animationCtr.beforeGoBack = () => {
         this.active = false;
         this.leaved = true;
         return this.play().then(() => { this.active = false; });
       };
       //   animationCtr.setAnimations([animationCtr.createAnimation(() => {
-      //     this.loopAnimations.forEach(a => {
-      //       a.pause();
-      //     });
       //     this.active = false;
       //     this.leaved = true;
-      //     this.loopAnimations = [];
       //     return this.play().then(() => { this.active = false; });
       //   }, () => {
       //     this.leaved = false;

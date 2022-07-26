@@ -10,10 +10,8 @@ import store from "./store";
 import initialize from "./initialize";
 
 import "@/styles/index.scss";
-import "@/components";
 import "@/layout/index.js";
-// svg 图标
-import "@/assets/svg-icons";
+
 import animationCtr from "@/libs/animation-controller";
 
 Vue.config.productionTip = false;

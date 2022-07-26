@@ -41,7 +41,6 @@ export default {
   },
   data() {
     return {
-      loopAnimations: [],
       active: false,
       animeList: [],
       personAfterEnter: false,
@@ -147,8 +146,8 @@ export default {
       autoplay: false
     });
 
-    cloudLeftAnime.complete = (a) => {
-      if (!a.reversed) {
+    cloudLeftAnime.update = (a) => {
+      if (a.progress === 100) {
         this.cloudLeftAfterEnter = true;
         const a = this.animeList[3] = cloudLeftForOut;
         if (!a.reversed) {
@@ -168,8 +167,8 @@ export default {
       }
     };
 
-    cloudRightAnime.complete = (a) => {
-      if (!a.reversed) {
+    cloudRightAnime.update = (a) => {
+      if (a.progress === 100) {
         this.cloudRightAfterEnter = true;
         const a = this.animeList[4] = cloudRightForOut;
         if (!a.reversed) {
@@ -200,19 +199,12 @@ export default {
   methods: {
     registryAnimation() {
       const animationCtr = this.$animationCtr;
-      animationCtr.beforeGoBack = () => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
+      animationCtr.reverseBeforeGoBack = animationCtr.beforeGoBack = () => {
         this.active = false;
         return this.play().then(() => { this.active = false; });
       };
       animationCtr.setAnimations([animationCtr.createAnimation(() => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
         this.active = false;
-        this.loopAnimations = [];
         return this.play().then(() => { this.active = false; });
       }, () => {
         return this.play().then(() => { this.active = true; });

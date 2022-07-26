@@ -22,7 +22,9 @@ class AnimationContorller {
     this.loaded = false;
     this.images = [];
     this.progressCallback = () => {};
+    this.inBackTransition = false;
     this.beforeGoBack = () => Promise.resolve();
+    this.reverseBeforeGoBack = () => Promise.resolve();
   }
 
   bindEl(el) {
@@ -194,6 +196,11 @@ class AnimationContorller {
     if (this.animations.length === 0) {
       return;
     }
+    if (this.inBackTransition) {
+      this.inBackTransition = false;
+      this.reverseBeforeGoBack();
+      return;
+    }
     this.hasStarted = true;
     if (this.isWaiting()) return;
     if (this.goingNext) {
@@ -240,25 +247,29 @@ class AnimationContorller {
     if (this.activeRouteIdx <= 0) {
       return;
     }
-    this.activeRouteIdx--;
     this.locked = true;
+    this.goingNext = false;
+    this.activeIdx = 0;
+    this.inBackTransition = true;
     await this.beforeGoBack();
+    this.inBackTransition = false;
     this.locked = false;
-    this.changeRoute();
+    this.changeRoute(this.activeRouteIdx - 1);
   }
 
   shouldGoToNextRoute() {
     if (this.activeRouteIdx >= this.routePathList.length - 1) {
       return;
     }
-    this.activeRouteIdx++;
-    this.changeRoute();
+    this.changeRoute(this.activeRouteIdx + 1);
     this.locked = true;
   }
 
-  changeRoute() {
-    this.router.push(this.routePathList[this.activeRouteIdx]);
+  changeRoute(idx) {
+    if (this.activeRouteIdx === idx) return;
+    this.router.push(this.routePathList[idx]);
     this.activeIdx = -1;
+    this.goingNext = true;
     this.hasStarted = false;
     this.animations = [];
     this.currentAnimation = null;

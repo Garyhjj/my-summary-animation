@@ -53,7 +53,6 @@ export default {
   },
   data() {
     return {
-      loopAnimations: [],
       active: false,
       animeList: [],
       textStyle: {
@@ -76,17 +75,10 @@ export default {
   methods: {
     registryAnimation() {
       const animationCtr = this.$animationCtr;
-      animationCtr.beforeGoBack = () => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
+      animationCtr.reverseBeforeGoBack = animationCtr.beforeGoBack = () => {
         return this.play();
       };
       animationCtr.setAnimations([animationCtr.createAnimation(() => {
-        this.loopAnimations.forEach(a => {
-          a.pause();
-        });
-        this.loopAnimations = [];
         return this.play();
       }, () => {
         return this.play();
