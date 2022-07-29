@@ -24,8 +24,10 @@ export default {
       rafID: 0,
       percent: 0,
       topmove: 10,
+      loadDone: false,
       done: false,
-      speed: 500
+      speed: 400,
+      finalWaiting: false
     };
   },
   created() {
@@ -33,32 +35,41 @@ export default {
     if (!ctr.loaded) {
       ctr.onProgress((done, total) => {
         if (done === total) {
+          this.loadDone = true;
           this.speed = 5;
+          if (this.finalWaiting) {
+            this.loading();
+          }
         }
       });
+    } else {
+      this.loadDone = true;
+      this.speed = 5;
     }
   },
 
   mounted() {
     this.changeFontSize();
     window.addEventListener("resize", this.changeFontSize);
-    this.rafID = window.requestAnimationFrame(this.loading);
+    this.loading();
   },
 
   methods: {
     // 波浪动画以及进度数控制
     loading() {
+      if (!this.loadDone && this.percent === 99) {
+        this.finalWaiting = true;
+        return;
+      }
       this.percent += 1;
       this.topmove = 10 + 15.8 / 100 * this.percent;
-      requestAnimationFrame(() => {
-        if (this.percent < 100) {
-          setTimeout(() => {
-            this.rafID = requestAnimationFrame(this.loading);
-          }, this.speed);
-        } else {
-          this.done = true;
-        }
-      });
+      if (this.percent < 100) {
+        setTimeout(() => {
+          this.rafID = requestAnimationFrame(this.loading);
+        }, this.speed);
+      } else {
+        this.done = true;
+      }
     },
     changeFontSize() {
       const deviceWidth = document.documentElement.clientWidth || document.body.clientWidth;
